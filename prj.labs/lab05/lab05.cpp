@@ -207,8 +207,11 @@ int main() {
 
     //showing keypoints
     std::cout << "\nShowing keypoints..." << std::endl;
-    std::vector<cv::Mat> src_visual_keypoints(source_images);
-    cv::Mat dst_visual_keypoints(target_image);
+    std::vector<cv::Mat> src_visual_keypoints(source_images.size());
+    for (size_t i{}; i < source_images.size(); ++i)
+        source_images[i].copyTo(src_visual_keypoints[i]);
+    cv::Mat dst_visual_keypoints;
+    target_image.copyTo(dst_visual_keypoints);
     drawPoints(src_visual_keypoints, dst_visual_keypoints, source_points, target_points, true);
 
     //finding homography
