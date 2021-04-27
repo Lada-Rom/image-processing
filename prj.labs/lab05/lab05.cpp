@@ -14,11 +14,21 @@ std::vector<cv::Mat> getImages(int n) {
 
 std::vector<std::vector<cv::Point2f>> getSourcePoints() {
     std::vector<std::vector<cv::Point2f>> points;
-    points.push_back({ { 2428, 3370 }, { 250, 3465 }, { 192, 758 }, { 2357, 702 } });
-    points.push_back({ { 410, 575 }, { 1903, 557 }, { 1908, 2436 }, { 410, 2426 } });
-    points.push_back({ { 546, 1962 }, { 590, 479 }, { 2484, 389 }, { 2481, 2042 } });
-    points.push_back({ { 674, 1932 }, { 734, 578 }, { 2457, 398 }, { 2495, 2042 } });
-    points.push_back({ { 584, 1764 }, { 671, 383 }, { 2453, 380 }, { 2382, 1918 } });
+    points.push_back({
+        { 2428, 3370 }, { 250, 3465 },
+        { 192, 758 }, { 2357, 702 } });
+    points.push_back({
+        { 410, 575 }, { 1903, 557 },
+        { 1908, 2436 }, { 410, 2426 } });
+    points.push_back({
+        { 546, 1962 }, { 590, 479 },
+        { 2484, 389 }, { 2481, 2042 } });
+    points.push_back({
+        { 674, 1932 }, { 734, 578 },
+        { 2457, 398 }, { 2495, 2042 } });
+    points.push_back({
+        { 584, 1764 }, { 671, 383 },
+        { 2453, 380 }, { 2382, 1918 } });
 
     return points;
 }
@@ -27,22 +37,24 @@ void drawPoints(std::vector<cv::Mat>& src_imgs, cv::Mat& dst_img,
     const std::vector<std::vector<cv::Point2f>>& src_keypoints,
     const std::vector<cv::Point2f>& dst_keypoints, bool write = false) {
     for (size_t i{}; i < src_imgs.size(); ++i)
-        for (size_t j{}; j < src_keypoints[i].size(); ++j) {
-//            std::cout << j << " " << src_keypoints[i].size() << " " << (j + 1) % src_keypoints[i].size() << std::endl;
-            cv::line(src_imgs[i], src_keypoints[i][j], src_keypoints[i][(j + 1) % src_keypoints[i].size()], 0);
-        }
+        for (size_t j{}; j < src_keypoints[i].size(); ++j)
+            cv::line(src_imgs[i], src_keypoints[i][j],
+                src_keypoints[i][(j + 1) % src_keypoints[i].size()], 0);
     for (size_t j{}; j < dst_keypoints.size(); ++j)
-        cv::line(dst_img, dst_keypoints[j], dst_keypoints[(j + 1) % dst_keypoints.size()], 0);
+        cv::line(dst_img, dst_keypoints[j],
+            dst_keypoints[(j + 1) % dst_keypoints.size()], 0);
 
     if (write) {
         for (size_t i{ 1 }; i <= src_imgs.size(); ++i)
-            cv::imwrite("../../../data/lab05.pnt" + std::to_string(i) + ".png", src_imgs[i - 1]);
+            cv::imwrite("../../../data/lab05.pnt" + std::to_string(i)
+                + ".png", src_imgs[i - 1]);
         cv::imwrite("../../../data/lab05.pnt0.png", dst_img);
     }
 }
 
 std::vector<cv::Mat> findMultipleHomography(
-    const std::vector<std::vector<cv::Point2f>>& srcs, const std::vector<cv::Point2f>& dst) {
+    const std::vector<std::vector<cv::Point2f>>& srcs,
+    const std::vector<cv::Point2f>& dst) {
     std::vector<cv::Mat> Hs;
     for (size_t i{}; i < srcs.size(); ++i)
         Hs.push_back(cv::findHomography(srcs[i], dst));
@@ -56,7 +68,8 @@ void warpMultiplePerspective(
         cv::warpPerspective(srcs[i], dsts[i], Hs[i], size);
     if (write)
         for (size_t i{1}; i <= dsts.size(); ++i)
-            cv::imwrite("../../../data/lab05.dst" + std::to_string(i) + ".png", dsts[i - 1]);
+            cv::imwrite("../../../data/lab05.dst" + std::to_string(i)
+                + ".png", dsts[i - 1]);
 }
 
 void MIPTBinarization(
@@ -122,7 +135,8 @@ void writeBinarized(const std::vector<cv::Mat>& srcs, const cv::Mat& src,
 
     if (write) {
         for (size_t i{}; i < srcs.size(); ++i)
-            cv::imwrite("../../../data/lab05.bin" + std::to_string(i + 1) + ".png", dsts[i]);
+            cv::imwrite("../../../data/lab05.bin" + std::to_string(i + 1)
+                + ".png", dsts[i]);
         cv::imwrite("../../../data/lab05.bin0.png", dst);
     }
 }
@@ -168,7 +182,8 @@ void writeDeviation(const std::vector<cv::Mat>& bins,
         std::cout << "image " << i + 1 << std::endl;
         devs[i] = deviation(bins[i], ideal);
         if (write)
-            cv::imwrite("../../../data/lab05.dev" + std::to_string(i + 1) + ".png", devs[i]);
+            cv::imwrite("../../../data/lab05.dev" + std::to_string(i + 1)
+                + ".png", devs[i]);
     }
 }
 
@@ -186,10 +201,12 @@ size_t connectedComponentsWithStatsColored( const cv::Mat& source) {
 void multiConnectedComponents(const std::vector<cv::Mat>& srcs) {
     std::vector<cv::Mat> source_inverted{srcs.size()};
     for (size_t i{}; i < srcs.size(); ++i)
-        cv::threshold(srcs[i], source_inverted[i], 127, 255, cv::THRESH_BINARY_INV);
+        cv::threshold(srcs[i], source_inverted[i],
+            127, 255, cv::THRESH_BINARY_INV);
     for (size_t i{}; i < srcs.size(); ++i) {
         std::cout << "image" << i + 1 << std::endl;
-        std::cout << "components: " << connectedComponentsWithStatsColored(srcs[i]) << std::endl;
+        std::cout << "components: "
+            << connectedComponentsWithStatsColored(srcs[i]) << std::endl;
     }
 }
 
@@ -198,12 +215,14 @@ int main() {
     std::cout << "Reading..." << std::endl;
     size_t num_images = 5;
     std::vector<cv::Mat> source_images = getImages(num_images);
-    cv::Mat target_image = cv::imread("../../../data/lab05.src0.png", cv::IMREAD_GRAYSCALE);
+    cv::Mat target_image = cv::imread(
+        "../../../data/lab05.src0.png", cv::IMREAD_GRAYSCALE);
 
     //adding keypoints for homography
     std::cout << "\nAdding keypoints..." << std::endl;
     std::vector<std::vector<cv::Point2f>> source_points = getSourcePoints();
-    std::vector<cv::Point2f> target_points = { {93, 106}, {2264, 106}, {2264, 2785}, {93, 2785} };
+    std::vector<cv::Point2f> target_points = {
+        {93, 106}, {2264, 106}, {2264, 2785}, {93, 2785} };
 
     //showing keypoints
     std::cout << "\nShowing keypoints..." << std::endl;
@@ -212,32 +231,42 @@ int main() {
         source_images[i].copyTo(src_visual_keypoints[i]);
     cv::Mat dst_visual_keypoints;
     target_image.copyTo(dst_visual_keypoints);
-    drawPoints(src_visual_keypoints, dst_visual_keypoints, source_points, target_points, true);
+    drawPoints(
+        src_visual_keypoints, dst_visual_keypoints,
+        source_points, target_points, true);
 
     //finding homography
     std::cout << "\nFinding homography..." << std::endl;
-    std::vector<cv::Mat> Hs = findMultipleHomography(source_points, target_points);
+    std::vector<cv::Mat> Hs =
+        findMultipleHomography(source_points, target_points);
 
     //warping
     std::cout << "\nWarping..." << std::endl;
     std::vector<cv::Mat> warped_images{num_images};
-    warpMultiplePerspective(source_images, warped_images, Hs, target_image.size(), true);
+    warpMultiplePerspective(
+        source_images, warped_images, Hs,
+        target_image.size(), true);
 
     //binarization
     std::cout << "\nBinarizing..." << std::endl;
     std::vector<cv::Mat> source_bin_images{num_images};
     cv::Mat target_bin_image;
-    writeBinarized(warped_images, target_image, source_bin_images, target_bin_image, true);
+    writeBinarized(
+        warped_images, target_image, source_bin_images,
+        target_bin_image, true);
 
     //deviation
     std::cout << "\nCalculating deviation..." << std::endl;
     std::vector<cv::Mat> source_deviation_images{num_images};
-    writeDeviation(source_bin_images, source_deviation_images, target_bin_image, true);
+    writeDeviation(
+        source_bin_images, source_deviation_images,
+        target_bin_image, true);
 
     //components
     std::cout << "\nCalculating components..." << std::endl;
     multiConnectedComponents(source_bin_images);
-    std::cout << "ideal: " << connectedComponentsWithStatsColored(target_bin_image) << std::endl;
+    std::cout << "ideal: " <<
+        connectedComponentsWithStatsColored(target_bin_image) << std::endl;
 
     cv::waitKey(0);
 }

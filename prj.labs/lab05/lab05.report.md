@@ -1,72 +1,75 @@
-## Работа 4. Использование бинаризации для анализа изображений (выделение символов) 
+## Работа 5. Исправление проективных искажений изображений страниц 
 автор: Толстенко Л. С.
-url: https://mysvn.ru/LS/tolstenko_l_s/prj.labs/lab04/
+url: https://mysvn.ru/LS/tolstenko_l_s/prj.labs/lab05/
 
 ### Задание
-1. Самостоятельно изготовить эталонный вариант бинаризованного изображения.
-2. Цветоредуцировать исходное цветное изображение до изображения в градациях серого $G_1$.
-3. Бинаризовать изображение $G_1$ и получить бинаризованное изображение $B_1$.
-4. Применить фильтрацию для улучшения качества бинаризованного изображения $F_1$.
-5. Выделить компоненты связности.
-6. Произвести фильтрацию компонент связности (классификация на "шумовые" и "объекты", $V_1$).
-7. Оценить числовые характеристики качества бинаризации на разных этапах и визуализировать отклонение $E_2$ результата анализа от эталона. 
-8. Реализовать и настроить локальную бинаризацию по статье "Быстрый алгоритм локальной бинаризации с гауссовым окном" (https://mipt.ru/upload/e35/09-FIVT-arpg5tlxag0.pdf).
-9. Сделать пп.3-7 для метода из п.8 (с теми же настройками, получить $B_2$, $F_2$, $V_2$, $E_2$ и численные оценки).
+1. Нарисовать эталонную "разметку" (четырехугольник изображения страницы) для отсканированного изображения и фотографий (не менее 5 любых).
+2. Изготовить эталонную бинаризацию для скана.
+3. Запрограммировать совмещение изображений при помощи гомографии с использованием эталонной геометрической разметки.
+4. Используя эталонную геометрическую разметку реализовать численную оценку качества бинаризации (из лабораторной 4) для совмещенных изображений (для отдельных изображений и для набора).
+5. Реализовать представление результатов выполнения лабораторной (иллюстрации, таблицы, графики и т. д.) и вставить в отчет.
+6. Произвести уточнение параметров бинаризации (улучшение качества для набора изображений) и продемонстрировать результаты после уточнения.
 
 ### Результаты
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.src2.jpg)
-Рис. 1. Исходное тестовое изображение.
+<img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.pnt0.png" style="zoom:25%;" />
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.g1.png)
-Рис. 2. Визуализация результата $G_1$ цветоредукции.
+Рис. 1. Эталонная разметка для эталонного изображения.
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.b1.png)
-Рис. 3. Визуализация результата бинаризации $B_1$. 
+<p style="text-align:center;">
+    <img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.pnt1.png" style="zoom:10%;" />
+    <img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.pnt2.png" style="zoom:10%;" />
+    <img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.pnt3.png" style="zoom:10%;" />
+    <img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.pnt4.png" style="zoom:10%;" />
+    <img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.pnt5.png" style="zoom:10%;" />
+</p>
 
-Использован cv::adaptiveThreshold() с параметрами: 255 - максимальное значение, cv::ADAPTIVE_THRESH_GAUSSIAN_C - метод бинаризации, cv::THRESH_BINARY, 15 - размер окна, 8 - константа, вычитаемая из среднего.
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.f1.png)
-Рис. 4. Визуализация результата $F_1$ фильтрации бинаризованного изображения $B_1$. 
+Рис. 2 - 6. Разметки цветоредуцированных фотографий (5 шт).
 
-Картинка получена с помощью cv::GaussianBlur() с размером окна 0 и нулевой дисперсией, и последующей бинаризацией с порогом 100.
+Далее будут рассматриваться не все фотографии, а только одна (первая) из них.
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.v1.png)
-Рис. 5. Визуализация результатов фильтрации компонент связности $V_1$. 
+<img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.dst1.png" style="zoom:25%;" />
 
-Красным помечены области, распознанные как шум.
+Рис. 7. Выровненное ахроматическое изображение с помощью гомографии относительно эталонного.
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.e1.png)
-Рис. 6. Визуализация отклонений от эталона $E_1$
+<p style="text-align:center;">
+    <img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.bin0.png" style="zoom:15%;" />
+    <img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.bin1.png" style="zoom:15%;" />
+</p>
 
-Зелёным обозначены области, которых нет в эталонном экземпляре, но которые появились в фильтрованном, а красным - области которые есть в эталонном, но отсутствуют в фильтрованном. Чёрный цвет соответствует случаю, когда цвет пикселей совпадает.
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.b2.png)
-Рис. 7. Визуализация результата бинаризации $B_2$ (метод с гауссовым окном). 
+Рис. 8 - 9. Бинаризация эталонного изображения и бинаризация изображения (первое из списка), выровненного с помощью гомографии.
 
-Подобранные параметры: размер окна - 41, дисперсия - 15, уровень шума - 20, пороговое значение - 200.
+Бинаризация эталона была произведена с помощью метода пороговой бинаризации (порог 127).
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.f2.png)
-Рис. 8. Визуализация результата $F_2$ фильтрации бинаризованного изображения $B_2$. 
+Бинаризация картинки произведена с помощью метода из 4 лабораторной работы (метод из статьи МФТИ) с параметрами: окно размера 41x41, сигма 15, априорный уровень шума 20, порог 200.
 
-Для фильтрации использованы cv::GaussianBlur() с параметрами 5 - размер окна, 0.8 - дисперсия и cv::threshold() с пороговым значением 140.
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.v2.png)
-Рис. 9. Визуализация результатов фильтрации компонент связности $V_2$ (метод с гауссовым окном). 
 
-Аналогично компонентам связности из предыдущих пунктов - красным обозначен шум.
+<img src="https://raw.githubusercontent.com/Lada-Rom/image-processing/master/data/lab05.dev1.png" style="zoom:25%;" />
 
-![](https://mysvn.ru/LS/tolstenko_l_s/data/lab04.e2.png)
-Рис. 10. Визуализация отклонений от эталона $E_2$ (метод с гауссовым окном). 
+Рис. 10. Визуализация отклонения полученного изображения от эталона.
 
-Цвета указаны аналогично отклонениям из предыдущих пунктов.
+Красным изображены точки, которые появились в результате работы алгоритма и которых нет на эталоне. Зелёным же показаны точки, присутствующие на эталоне, но которых нет на результирующей картинке.
+
+
 
 Так же были рассчитаны среднеквадратичная ошибка и пиковое отношение сигнал/шум. 
 
-| Таблица                 | MSE     | PSNR    |
-| ----------------------- | ------- | ------- |
-| Стандартная бинаризация | 1546.81 | 37.3858 |
-| MIPT бинаризация        | 754.118 | 44.5698 |
+| Таблица | MSE     | PSNR    | Components |
+| --------| ------- | ------- | ---------- |
+| image 1 | 5815.05 | 24.1432 | 1295       |
+| image 2 | 5688.76 | 24.3628 | 1001       |
+| image 3 | 7278.00 | 21.8992 | 1541       |
+| image 4 | 5483.12 | 24.7310 | 1058       |
+| image 5 | 6956.80 | 22.3505 | 1069       |
+
+Несмотря на то, что бинаризация картинок получилось близкой к истинной (визуально), ошибки MSE и PSNR вышли слишком большими. Это связано со сдвигом из-за неточности гомографии (а точнее изначально взятых особых точек). Поэтому измерять качество бинаризации с помощью MSE и PSNR не получается.
+
+Поэтому предлагается измерять качество бинаризации с помощью числа компонент связности. Число компонентов связности на эталонном изображении равно 1254.
+
+Данный метод подходит для нашей задачи, так как, бинаризуя эталон и другие картинки одним и тем же методом (но с индивидуальными наиболее подходящими параметрами), мы получим приблизительно одинаковое число компонент связности. Значения могут сильно отличаться, если бинаризация произведена неправильно. Случай, при котором число компонент связности примерно совпадает с числом компонент эталона, но визуально информация потеряна, исключён за счёт единообразия бинаризации.
 
 ### Текст программы
 
@@ -76,45 +79,145 @@ url: https://mysvn.ru/LS/tolstenko_l_s/prj.labs/lab04/
 #include <vector>
 #include <opencv2/opencv.hpp>
 
-void showWindow(const cv::Mat& image, std::string name = "Image",
-    size_t x = 0, size_t y = 0) {
-    imshow(name, image);
-    cv::moveWindow(name, x, y);
+std::vector<cv::Mat> getImages(int n) {
+    std::vector<cv::Mat> images;
+    for (size_t i{ 1 }; i <= n; ++i)
+        images.push_back(cv::imread(
+            "../../../data/lab05.src" + std::to_string(i) + ".png",
+            cv::IMREAD_GRAYSCALE));
+    return images;
 }
 
-size_t connectedComponentsWithStatsColored(
-    const cv::Mat& source, cv::Mat& dest, size_t connect) {
-    cv::Mat labels;
-    cv::Mat stats;
-    cv::Mat centroids;
+std::vector<std::vector<cv::Point2f>> getSourcePoints() {
+    std::vector<std::vector<cv::Point2f>> points;
+    points.push_back({
+        { 2428, 3370 }, { 250, 3465 },
+        { 192, 758 }, { 2357, 702 } });
+    points.push_back({
+        { 410, 575 }, { 1903, 557 },
+        { 1908, 2436 }, { 410, 2426 } });
+    points.push_back({
+        { 546, 1962 }, { 590, 479 },
+        { 2484, 389 }, { 2481, 2042 } });
+    points.push_back({
+        { 674, 1932 }, { 734, 578 },
+        { 2457, 398 }, { 2495, 2042 } });
+    points.push_back({
+        { 584, 1764 }, { 671, 383 },
+        { 2453, 380 }, { 2382, 1918 } });
 
-    int num_labels = cv::connectedComponentsWithStats(
-        source, labels, stats, centroids);
+    return points;
+}
 
-    int x, y, w, h, a;
-    dest = cv::Mat::zeros(source.size(), CV_8UC3);
-    for (size_t i{}; i < source.rows; ++i)
-        for (size_t j{}; j < source.cols; ++j) {
-            int label = labels.at<int>(i, j);
-            cv::Vec3b& pixel = dest.at<cv::Vec3b>(i, j);
-            if (label == 0) {
-                pixel = cv::Vec3b{ 255, 255, 255 };
-                continue;
-            }
-            w = stats.at<int>(cv::Point(2, label));
-            h = stats.at<int>(cv::Point(3, label));
-            a = stats.at<int>(cv::Point(4, label));
-            if (a <= 60) {
-                pixel = cv::Vec3b{ 0, 0, 255 };
-                continue;
-            }
-            pixel = cv::Vec3b{ 0, 0, 0 };
+void drawPoints(std::vector<cv::Mat>& src_imgs, cv::Mat& dst_img,
+    const std::vector<std::vector<cv::Point2f>>& src_keypoints,
+    const std::vector<cv::Point2f>& dst_keypoints, bool write = false) {
+    for (size_t i{}; i < src_imgs.size(); ++i)
+        for (size_t j{}; j < src_keypoints[i].size(); ++j)
+            cv::line(src_imgs[i], src_keypoints[i][j],
+                src_keypoints[i][(j + 1) % src_keypoints[i].size()], 0);
+    for (size_t j{}; j < dst_keypoints.size(); ++j)
+        cv::line(dst_img, dst_keypoints[j],
+            dst_keypoints[(j + 1) % dst_keypoints.size()], 0);
+
+    if (write) {
+        for (size_t i{ 1 }; i <= src_imgs.size(); ++i)
+            cv::imwrite("../../../data/lab05.pnt" + std::to_string(i)
+                + ".png", src_imgs[i - 1]);
+        cv::imwrite("../../../data/lab05.pnt0.png", dst_img);
+    }
+}
+
+std::vector<cv::Mat> findMultipleHomography(
+    const std::vector<std::vector<cv::Point2f>>& srcs,
+    const std::vector<cv::Point2f>& dst) {
+    std::vector<cv::Mat> Hs;
+    for (size_t i{}; i < srcs.size(); ++i)
+        Hs.push_back(cv::findHomography(srcs[i], dst));
+    return Hs;
+}
+
+void warpMultiplePerspective(
+    const std::vector<cv::Mat>& srcs, std::vector<cv::Mat>& dsts,
+    const std::vector<cv::Mat>& Hs, const cv::Size& size, bool write = false) {
+    for (size_t i{}; i < srcs.size(); ++i)
+        cv::warpPerspective(srcs[i], dsts[i], Hs[i], size);
+    if (write)
+        for (size_t i{1}; i <= dsts.size(); ++i)
+            cv::imwrite("../../../data/lab05.dst" + std::to_string(i)
+                + ".png", dsts[i - 1]);
+}
+
+void MIPTBinarization(
+    const cv::Mat& source_image, cv::Mat& bin_image,
+    size_t radius, double sigma, int d0, int thres) {
+    cv::Rect rect;
+
+    cv::Mat G = cv::Mat::zeros(source_image.size(), CV_8UC1);
+    std::cout << "Matrix G" << std::endl;
+    cv::GaussianBlur(
+        source_image, G, cv::Size(2 * radius + 1, 2 * radius + 1), sigma);
+
+    std::cout << "Matrix M" << std::endl;
+    cv::Mat M = cv::Mat::zeros(source_image.size(), CV_8UC1);
+    double source_pixel, gauss_pixel;
+    for (size_t i{}; i < M.cols; ++i) {
+        for (size_t j{}; j < M.rows; ++j) {
+            source_pixel = static_cast<double>(
+                source_image.at<uchar>(cv::Point(i, j)));
+            gauss_pixel = static_cast<double>(
+                G.at<uchar>(cv::Point(i, j)));
+            M.at<uchar>(cv::Point(i, j)) = std::abs(gauss_pixel - source_pixel);
         }
+    }
 
-    return num_labels;
+    std::cout << "Matrix D" << std::endl;
+    cv::Mat D = cv::Mat::zeros(source_image.size(), CV_8UC1);
+    cv::GaussianBlur(M, D, cv::Size(2 * radius + 1, 2 * radius + 1), sigma);
+
+    std::cout << "Matrix B" << std::endl;
+    cv::Mat B = cv::Mat::zeros(source_image.size(), CV_8UC1);
+    double pixelI, pixelG, pixelD;
+    double condition;
+    for (size_t i{}; i < B.cols; ++i) {
+        for (size_t j{}; j < B.rows; ++j) {
+            pixelG = static_cast<double>(
+                G.at<uchar>(cv::Point(i, j)));
+            pixelI = static_cast<double>(
+                source_image.at<uchar>(cv::Point(i, j)));
+            pixelD = static_cast<double>(
+                D.at<uchar>(cv::Point(i, j)));
+            condition = (pixelG - pixelI) / (pixelD + d0);
+            B.at<uchar>(cv::Point(i, j)) = (255 * condition < thres) ? 255 : 0;
+        }
+    }
+
+    bin_image = B;
 }
 
-cv::Mat deviation(cv::Mat& lhs, cv::Mat& rhs) {
+void writeBinarized(const std::vector<cv::Mat>& srcs, const cv::Mat& src,
+    std::vector<cv::Mat>& dsts, cv::Mat& dst, bool write = false) {
+    std::cout << "image 1" << std::endl;
+    MIPTBinarization(srcs[0], dsts[0], 20, 15, 20, 200);
+    std::cout << "image 2" << std::endl;
+    MIPTBinarization(srcs[1], dsts[1], 20, 40, 20, 180);
+    std::cout << "image 3" << std::endl;
+    MIPTBinarization(srcs[2], dsts[2], 20, 15, 20, 150);
+    std::cout << "image 4" << std::endl;
+    MIPTBinarization(srcs[3], dsts[3], 20, 50, 20, 150);
+    std::cout << "image 5" << std::endl;
+    MIPTBinarization(srcs[4], dsts[4], 20, 60, 20, 150);
+    cv::threshold(src, dst, 127, 255, cv::THRESH_BINARY);
+
+    if (write) {
+        for (size_t i{}; i < srcs.size(); ++i)
+            cv::imwrite("../../../data/lab05.bin" + std::to_string(i + 1)
+                + ".png", dsts[i]);
+        cv::imwrite("../../../data/lab05.bin0.png", dst);
+    }
+}
+
+cv::Mat deviation(const cv::Mat& lhs, const cv::Mat& rhs) {
     cv::Mat deviation(lhs.size(), CV_8UC3);
     double MSE{};
     double PSNR{};
@@ -149,140 +252,97 @@ cv::Mat deviation(cv::Mat& lhs, cv::Mat& rhs) {
     return deviation;
 }
 
-void MIPTBinarization(
-    const cv::Mat& source_image, cv::Mat& bin_image,
-    size_t radius, double sigma, int d0, int thres) {
-    cv::Rect rect;
-
-    cv::Mat G = cv::Mat::zeros(source_image.size(), CV_8UC1);
-    std::cout << "Matrix G" << std::endl;
-    cv::GaussianBlur(
-        source_image, G, cv::Size(2 * radius + 1, 2 * radius + 1), sigma);
-    //    cv::imwrite("../../../data/test1.png", G);
-
-    std::cout << "Matrix M" << std::endl;
-    cv::Mat M = cv::Mat::zeros(source_image.size(), CV_8UC1);
-    double source_pixel, gauss_pixel;
-    for (size_t i{}; i < M.cols; ++i) {
-        for (size_t j{}; j < M.rows; ++j) {
-            source_pixel = static_cast<double>(
-                source_image.at<uchar>(cv::Point(i, j)));
-            gauss_pixel = static_cast<double>(
-                G.at<uchar>(cv::Point(i, j)));
-            M.at<uchar>(cv::Point(i, j)) = std::abs(gauss_pixel - source_pixel);
-        }
+void writeDeviation(const std::vector<cv::Mat>& bins,
+    std::vector<cv::Mat>& devs, const cv::Mat& ideal, bool write = false) {
+    for (size_t i{}; i < bins.size(); ++i) {
+        std::cout << "image " << i + 1 << std::endl;
+        devs[i] = deviation(bins[i], ideal);
+        if (write)
+            cv::imwrite("../../../data/lab05.dev" + std::to_string(i + 1)
+                + ".png", devs[i]);
     }
-    //    cv::imwrite("../../../data/test2.png", M);
+}
 
-    std::cout << "Matrix D" << std::endl;
-    cv::Mat D = cv::Mat::zeros(source_image.size(), CV_8UC1);
-    cv::GaussianBlur(M, D, cv::Size(2 * radius + 1, 2 * radius + 1), sigma);
-    //    cv::imwrite("../../../data/test3.png", D);
+size_t connectedComponentsWithStatsColored( const cv::Mat& source) {
+    cv::Mat labels;
+    cv::Mat stats;
+    cv::Mat centroids;
 
-    std::cout << "Matrix B" << std::endl;
-    cv::Mat B = cv::Mat::zeros(source_image.size(), CV_8UC1);
-    double pixelI, pixelG, pixelD;
-    double condition;
-    for (size_t i{}; i < B.cols; ++i) {
-        for (size_t j{}; j < B.rows; ++j) {
-            pixelG = static_cast<double>(
-                G.at<uchar>(cv::Point(i, j)));
-            pixelI = static_cast<double>(
-                source_image.at<uchar>(cv::Point(i, j)));
-            pixelD = static_cast<double>(
-                D.at<uchar>(cv::Point(i, j)));
-            condition = (pixelG - pixelI) / (pixelD + d0);
-            B.at<uchar>(cv::Point(i, j)) = (255 * condition < thres) ? 255 : 0;
-        }
+    int num_labels = cv::connectedComponentsWithStats(
+        source, labels, stats, centroids);
+
+    return num_labels;
+}
+
+void multiConnectedComponents(const std::vector<cv::Mat>& srcs) {
+    std::vector<cv::Mat> source_inverted{srcs.size()};
+    for (size_t i{}; i < srcs.size(); ++i)
+        cv::threshold(srcs[i], source_inverted[i],
+            127, 255, cv::THRESH_BINARY_INV);
+    for (size_t i{}; i < srcs.size(); ++i) {
+        std::cout << "image" << i + 1 << std::endl;
+        std::cout << "components: "
+            << connectedComponentsWithStatsColored(srcs[i]) << std::endl;
     }
-
-    bin_image = B;
 }
 
 int main() {
-    //source image
-    cv::Mat source_image = cv::imread("../../../data/lab04.src2.jpg");
+    //images[0] is ideal image
+    std::cout << "Reading..." << std::endl;
+    size_t num_images = 5;
+    std::vector<cv::Mat> source_images = getImages(num_images);
+    cv::Mat target_image = cv::imread(
+        "../../../data/lab05.src0.png", cv::IMREAD_GRAYSCALE);
 
-    //ideal image
-    cv::Mat ideal = cv::imread("../../../data/ideal.png", cv::IMREAD_GRAYSCALE);
+    //adding keypoints for homography
+    std::cout << "\nAdding keypoints..." << std::endl;
+    std::vector<std::vector<cv::Point2f>> source_points = getSourcePoints();
+    std::vector<cv::Point2f> target_points = {
+        {93, 106}, {2264, 106}, {2264, 2785}, {93, 2785} };
 
-    //convertion to gray image
-    cv::Mat gray_image;
-    cv::cvtColor(source_image, gray_image, cv::COLOR_BGR2GRAY);
+    //showing keypoints
+    std::cout << "\nShowing keypoints..." << std::endl;
+    std::vector<cv::Mat> src_visual_keypoints(source_images.size());
+    for (size_t i{}; i < source_images.size(); ++i)
+        source_images[i].copyTo(src_visual_keypoints[i]);
+    cv::Mat dst_visual_keypoints;
+    target_image.copyTo(dst_visual_keypoints);
+    drawPoints(
+        src_visual_keypoints, dst_visual_keypoints,
+        source_points, target_points, true);
 
-    //1.1. standart binarization
-    std::cout << "1.1. Standart binarization" << std::endl;
-    cv::Mat standart_bin_image;
-    cv::adaptiveThreshold(
-        gray_image, standart_bin_image,
-        255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY, 15, 8);
+    //finding homography
+    std::cout << "\nFinding homography..." << std::endl;
+    std::vector<cv::Mat> Hs =
+        findMultipleHomography(source_points, target_points);
 
-    //1.2. standart filtration
-    std::cout << "1.2. Standart filtration" << std::endl;
-    cv::Mat standart_filtered_image;
-    cv::GaussianBlur(
-        standart_bin_image, standart_filtered_image,
-        cv::Size(3, 3), 0, 0);
-    cv::threshold(
-        standart_filtered_image, standart_filtered_image,
-        100, 255, cv::ThresholdTypes::THRESH_BINARY);
+    //warping
+    std::cout << "\nWarping..." << std::endl;
+    std::vector<cv::Mat> warped_images{num_images};
+    warpMultiplePerspective(
+        source_images, warped_images, Hs,
+        target_image.size(), true);
 
-    //1.3. standart components
-    std::cout << "1.3. Standart components" << std::endl;
-    cv::Mat standart_labeled_image;
-    cv::Mat standart_inverted_filtered_image;
-    cv::threshold(
-        standart_filtered_image, standart_inverted_filtered_image,
-        100, 255, cv::ThresholdTypes::THRESH_BINARY_INV);
-    size_t comp_num1 = connectedComponentsWithStatsColored(
-        standart_inverted_filtered_image, standart_labeled_image, 4);
-    std::cout << "Number of components: " << comp_num1 << std::endl;
+    //binarization
+    std::cout << "\nBinarizing..." << std::endl;
+    std::vector<cv::Mat> source_bin_images{num_images};
+    cv::Mat target_bin_image;
+    writeBinarized(
+        warped_images, target_image, source_bin_images,
+        target_bin_image, true);
 
-    //1.4. standart deviation from the ideal
-    std::cout << "1.4. Standart deviation" << std::endl;
-    cv::Mat standart_deviation = deviation(standart_filtered_image, ideal);
+    //deviation
+    std::cout << "\nCalculating deviation..." << std::endl;
+    std::vector<cv::Mat> source_deviation_images{num_images};
+    writeDeviation(
+        source_bin_images, source_deviation_images,
+        target_bin_image, true);
 
-    //2.1. gauss binarization
-    std::cout << "2.1. Gauss binarization" << std::endl;
-    cv::Mat gauss_bin_image;
-    MIPTBinarization(gray_image, gauss_bin_image, 20, 15, 20, 200);
-
-    //2.2. gauss filtration
-    std::cout << "2.2. Gauss filtration" << std::endl;
-    cv::Mat gauss_filtered_image;
-    cv::GaussianBlur(
-        gauss_bin_image, gauss_filtered_image, cv::Size(5, 5), 0.8);
-    cv::threshold(
-        gauss_filtered_image, gauss_filtered_image, 140, 255,
-        cv::ThresholdTypes::THRESH_BINARY);
-
-    //2.3. gauss components
-    std::cout << "2.3. Gauss components" << std::endl;
-    cv::Mat gauss_labeled_image;
-    cv::Mat gauss_inverted_filtered_image;
-    cv::threshold(
-        gauss_filtered_image, gauss_inverted_filtered_image,
-        100, 255, cv::ThresholdTypes::THRESH_BINARY_INV);
-    size_t comp_num2 = connectedComponentsWithStatsColored(
-        gauss_inverted_filtered_image, gauss_labeled_image, 4);
-    std::cout << "Number of components: " << comp_num2 << std::endl;
-
-    //2.4. gauss deviation from the ideal
-    std::cout << "2.4. Gauss deviation" << std::endl;
-    cv::Mat gauss_deviation = deviation(gauss_filtered_image, ideal);
-
-    //visualization
-    cv::imwrite("../../../data/lab04.g1.png", gray_image);
-
-    cv::imwrite("../../../data/lab04.b1.png", standart_bin_image);
-    cv::imwrite("../../../data/lab04.f1.png", standart_filtered_image);
-    cv::imwrite("../../../data/lab04.v1.png", standart_labeled_image);
-    cv::imwrite("../../../data/lab04.e1.png", standart_deviation);
-
-    cv::imwrite("../../../data/lab04.b2.png", gauss_bin_image);
-    cv::imwrite("../../../data/lab04.f2.png", gauss_filtered_image);
-    cv::imwrite("../../../data/lab04.v2.png", gauss_labeled_image);
-    cv::imwrite("../../../data/lab04.e2.png", gauss_deviation);
+    //components
+    std::cout << "\nCalculating components..." << std::endl;
+    multiConnectedComponents(source_bin_images);
+    std::cout << "ideal: " <<
+        connectedComponentsWithStatsColored(target_bin_image) << std::endl;
 
     cv::waitKey(0);
 }
